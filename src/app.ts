@@ -11,7 +11,6 @@ app.use(
       'http://localhost:3000',
       'http://localhost:5173',
       'http://localhost:5000',
-      'https://restaurant-client-virid.vercel.app',
     ],
     credentials: true,
   }),
@@ -19,7 +18,7 @@ app.use(
 
 app.use(express.json());
 
-app.use("/api/auth", )
+// app.use("/api")
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello from setup file');
@@ -29,7 +28,3 @@ app.use(globalErrorHandler)
 app.use("*", routeNotFoundHandler)
 
 export default app;
-
-function cors(arg0: { origin: string[]; credentials: boolean; }): any {
-  throw new Error('Function not implemented.');
-}
