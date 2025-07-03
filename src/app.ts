@@ -5,6 +5,7 @@ import cors from 'cors';
 import userRouter from './module/users/user.router';
 import { FolderRoutes } from './module/folders/folder.router';
 import { FileRoutes } from './module/files/file.router';
+import { favouriteRoutes } from './module/favourites/favourite.router';
 
 const app : Application = express();
 
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use("/api/user", userRouter)
 app.use("/api/folder", FolderRoutes)
 app.use("/api/file", FileRoutes)
+app.use("/api/favourite", favouriteRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello from setup file jotter');

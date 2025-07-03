@@ -16,19 +16,35 @@ import { fileServices } from './file.services';
   });
 });
 
+
+
 const getMyFiles = catchAsync(async (req: Request, res: Response) => {
   const userId = req.params.userId;
   const searchTerm = req.query.searchTerm?.toString();
+  const createdAt = req.query.createdAt?.toString();
+  const from = req.query.from?.toString();
+  const to = req.query.to?.toString();
 
-  const result = await fileServices.getAllFilesByUser(userId, searchTerm);
+  const { files, totalSizeMB } = await fileServices.getAllFilesByUser(
+    userId,
+    searchTerm,
+    createdAt,
+    from,
+    to
+  );
 
   sendResponse(res, {
     success: true,
     statusCode: 200,
     message: 'Files retrieved successfully',
-    data: result,
+    data: {
+      files,
+      totalSizeMB,
+    },
   });
 });
+
+
 
 
  const getFilesByType = catchAsync(async (req: Request, res: Response) => {
@@ -95,5 +111,4 @@ export const duplicateFile = catchAsync(async (req: Request, res: Response) => {
 
 
 export const fileController = {
-    createFile, getFilesByType, getMyFiles, getSingleFile, renameFile, deleteFile, duplicateFile
-}
+    createFile, getFilesByType, getMyFiles, getSingleFile, renameFile, deleteFile, duplicateFile }

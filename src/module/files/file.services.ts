@@ -6,18 +6,43 @@ import { Types } from 'mongoose';
   return await FileModel.create(data);
 };
 
+
 const getAllFilesByUser = async (
   userId: string,
-  searchTerm?: string
-): Promise<IFile[]> => {
+  searchTerm?: string,
+  createdAt?: string,
+  from?: string,
+  to?: string
+): Promise<{ files: IFile[]; totalSizeMB: number }> => {
   const query: any = { userId };
 
+  // Search by file name
   if (searchTerm) {
     query.name = { $regex: searchTerm, $options: "i" };
   }
 
-  return await FileModel.find(query);
+  // Search by createdAt (specific date)
+  if (createdAt) {
+    const start = new Date(createdAt);
+    const end = new Date(createdAt);
+    end.setDate(end.getDate() + 1);
+    query.createdAt = { $gte: start, $lt: end };
+  }
+
+  // Search by date range
+  if (from && to) {
+    query.createdAt = {
+      $gte: new Date(from),
+      $lte: new Date(to),
+    };
+  }
+
+  const files = await FileModel.find(query);
+  const totalSizeMB = files.reduce((sum, file) => sum + file.sizeMB, 0);
+
+  return { files, totalSizeMB };
 };
+
 
 
 

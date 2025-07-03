@@ -14,6 +14,8 @@ router.post(
 // Get all files for a user
 router.get('/:userId', fileController.getMyFiles);
 
+
+
 // Get all files of a specific type for a user
 router.get('/:userId/type/:type', fileController.getFilesByType);
 
